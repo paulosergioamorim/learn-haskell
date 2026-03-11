@@ -1,5 +1,13 @@
 data Number = Zero | S Number deriving Show
 
+convertToInt :: Number -> Int
+convertToInt Zero = 0
+convertToInt (S x) = 1 + convertToInt x
+
+convertToNumber :: Int -> Number
+convertToNumber 0 = Zero
+convertToNumber x = S (convertToNumber (x-1))
+
 soma :: Number -> Number -> Number
 soma x Zero = x
 soma x (S y) = S(soma x y)

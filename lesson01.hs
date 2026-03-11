@@ -1,12 +1,33 @@
-fib :: Integer -> Integer
-fib 0 = 1
-fib 1 = 1
-fib n = fib(n-1) + fib(n-2)
+-- Credit Card Number Validation
+toDigits :: Int -> [Int]
+toDigits x
+    | x < 10 = [x]
+    | otherwise = toDigits (div x 10) ++ [mod x 10]
 
-toDigitsRev :: Integer -> [Integer]
-toDigitsRev 0 = []
-toDigitsRev n = if n > 0 then (n `mod` 10) : toDigitsRev(n `div` 10) else []
+toDigitsRev :: Int -> [Int]
+toDigitsRev x
+    | x < 10 = [x]
+    | otherwise = (mod x 10) : toDigitsRev (div x 10)
 
-toDigits :: Integer -> [Integer]
-toDigits n = reverse (toDigitsRev(n))
+doubleIt :: [Int] -> [Int]
+doubleItHelper :: [Int] -> [Int]
 
+doubleIt xs = reverse (doubleItHelper (reverse xs))
+
+doubleItHelper [] = []
+doubleItHelper (x:[]) = [x]
+doubleItHelper (x:y:xs) = [x] ++ [2 * y] ++ doubleItHelper xs
+
+sumDigits :: [Int] -> Int
+sumDigits xs = sum (map sum (map toDigits xs))
+
+validate :: Int -> Bool
+validate x = mod (sumDigits (doubleIt (toDigits x))) 10 == 0
+
+-- The Towers of Hanoi
+-- String is Peg
+type Move = (String, String)
+hanoi :: Int -> String -> String -> String -> [Move]
+
+hanoi 0 _ _ _ = []
+hanoi n from via to = hanoi (n-1) from to via ++ [(from, to)] ++ hanoi (n-1) via from to
